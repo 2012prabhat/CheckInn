@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import dbConnect from "@/utils/dbConnect";
+import connectDB from "@/lib/db";
 import Booking from "@/models/Booking";
 
 // POST function to create a new booking
 export async function POST(req) {
-  await dbConnect();
+  await connectDB();
   try {
     // Parse the request body
     const { userId, hotelId, checkInDate, checkOutDate, totalPrice } = await req.json();

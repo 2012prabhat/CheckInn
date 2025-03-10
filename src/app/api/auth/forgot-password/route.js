@@ -2,7 +2,7 @@ import connectDB from "@/lib/db";
 import User from "@/models/User";
 import crypto from "crypto";
 import { NextResponse } from "next/server";
-import sendEmail from "@/utils/sendEmail";
+import sendEmail from "@/lib/sendEmail";
 
 export async function POST(req) {
   try {

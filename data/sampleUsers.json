@@ -1,0 +1,23 @@
+[
+    {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "hashedPassword123",
+      "phone": "9876543210",
+      "role": "user"
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "password": "hashedPassword456", 
+      "phone": "9876543211",
+      "role": "user"
+    },
+    {
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "password": "hashedAdminPassword", 
+      "phone": "9876543212",
+      "role": "admin"
+    }
+  ]

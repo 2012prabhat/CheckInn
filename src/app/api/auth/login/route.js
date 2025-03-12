@@ -36,9 +36,16 @@ export async function POST(req) {
     );
 
     // ✅ Create response with Set-Cookie header
+
     const response = NextResponse.json({
       message: "Login successful",
       accessToken, // Send accessToken in response
+      user:{
+        id:user._id,
+        name:user.name,
+        email:user.email,
+        role:user.role
+      }
     });
 
     response.headers.set(

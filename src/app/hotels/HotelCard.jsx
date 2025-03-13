@@ -1,7 +1,9 @@
 import React,{useState} from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation';
 
 function HotelCard({hotel}) {
+    const router = useRouter();
     const [mainImg, setMainImg] = useState(0);
     const getIcon = (amenitie)=>{
         switch(amenitie){
@@ -19,6 +21,8 @@ function HotelCard({hotel}) {
                 return '💪'
              case 'gym':
                 return '💪'
+            case 'boating':
+                return '🚣'
         }
     }
   return (
@@ -39,7 +43,7 @@ function HotelCard({hotel}) {
             <div className='flex gap-5 items-center mt-6'>
             <div className='font-semibold text-3xl'>₹ {hotel.pricePerNight}</div>
             <div className='flex gap-2'>
-                <button className='secBtn'>View Details</button>
+                <button className='secBtn' onClick={()=>router.push(`/hotels/${hotel.slug}`)}>View Details</button>
                 <button className='priBtn'>Book Now</button>
             </div>
             </div>

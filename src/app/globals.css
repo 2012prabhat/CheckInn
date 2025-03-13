@@ -11,3 +11,48 @@ body{
  padding: 0;
  margin: 0;
 }
+
+:root{
+  --priBtn:rgba(46, 204, 113,1.0);
+  --priBtnHover:rgba(52, 152, 115,1.0);
+  --secBtn:rgba(52, 152, 219,1.0);
+  --secBtnHover:rgba(52, 152, 319,1.0);
+}
+.light{
+  --mainCol:rgba(236, 240, 241,1.0);
+   color: black;
+}
+
+.dark{
+  --mainCol:blue;
+   color: white;
+}
+
+.priBtn{
+  background: var(--priBtn);
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.5s;
+}
+
+.priBtn:hover{
+  background: var(--priBtnHover);
+}
+
+.secBtn{
+  background: var(--secBtn);
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.5s;
+}
+
+
+
+
+.secBtn:hover{
+  background: var(--secBtnHover);
+}
+
+

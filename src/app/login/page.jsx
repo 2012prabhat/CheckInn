@@ -11,10 +11,11 @@ import LoginBg from "/public/loginBg.jpg";
 
 const Login = () => {
   const router = useRouter();
-  const { login, isAuthenticated, setUser } = useAuthStore();
+  const { login, isAuthenticated,initializeAuth, setUser } = useAuthStore();
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   useEffect(() => {
+    initializeAuth()
     if (isAuthenticated) {
       router.push("/");
     }
@@ -23,7 +24,7 @@ const Login = () => {
   const handleLogin = async (values, { setSubmitting, setErrors }) => {
     try {
       const resp = await axios.post("/api/auth/login", {
-        email: values.username,
+        email: values.email,
         password: values.password,
       });
 
@@ -37,9 +38,26 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = async (values, { setSubmitting, setErrors }) => {
+    try {
+      const resp = await axios.post("/api/auth/forgot-password", {
+        email: values.email,
+      });
+
+      alert(resp.data.message || "Password reset link sent to your email!");
+      setIsForgotPassword(false); // Switch back to login form
+    } catch (err) {
+      setErrors({ general: err?.response?.data?.message || "Request failed" });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const validationSchema = Yup.object().shape({
-    username: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().required("Password is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    ...(isForgotPassword
+      ? {} // No password field for forgot password
+      : { password: Yup.string().required("Password is required") }),
   });
 
   return (
@@ -60,61 +78,92 @@ const Login = () => {
         </div>
 
         <Formik
-          initialValues={{ username: "", password: "" }}
+          initialValues={{ email: "", password: "" }}
           validationSchema={validationSchema}
-          onSubmit={handleLogin}
+          validateOnChange={false} // ✅ Disables validation on change
+          validateOnBlur={false} // ✅ Disables validation on blur
+          onSubmit={isForgotPassword ? handleForgotPassword : handleLogin}
         >
           {({ isSubmitting, errors }) => (
             <Form className="mt-4">
               {errors.general && (
                 <div className="text-red-500 text-sm mb-2">{errors.general}</div>
               )}
+
+              {/* Email Field */}
               <div className="mb-4">
-                <label htmlFor="username" className="block text-gray-700">
+                <label htmlFor="email" className="block text-gray-700">
                   Email
                 </label>
                 <Field
                   type="email"
-                  name="username"
-                  className="w-full border rounded-lg px-4 py-2"
+                  name="email"
+                  className={`w-full border rounded-lg px-4 py-2 ${
+                    errors.email ? "border-red-500" : ""
+                  }`}
                   placeholder="Enter your email"
                 />
                 <ErrorMessage
-                  name="username"
+                  name="email"
                   component="div"
                   className="text-red-500 text-sm"
                 />
               </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="block text-gray-700">
-                  Password
-                </label>
-                <Field
-                  type="password"
-                  name="password"
-                  className="w-full border rounded-lg px-4 py-2"
-                  placeholder="Enter your password"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
+
+              {/* Password Field (Only in Login Mode) */}
+              {!isForgotPassword && (
+                <div className="mb-4">
+                  <label htmlFor="password" className="block text-gray-700">
+                    Password
+                  </label>
+                  <Field
+                    type="password"
+                    name="password"
+                    className={`w-full border rounded-lg px-4 py-2 ${
+                      errors.password ? "border-red-500" : ""
+                    }`}
+                    placeholder="Enter your password"
+                  />
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="text-red-500 text-sm"
+                  />
+                </div>
+              )}
+
+              {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full bg-blue-500 text-white font-medium py-2 rounded-lg hover:bg-blue-600"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Logging in..." : "Login"}
+                {isSubmitting
+                  ? isForgotPassword
+                    ? "Processing..."
+                    : "Logging in..."
+                  : isForgotPassword
+                  ? "Reset Password"
+                  : "Login"}
               </button>
+
+              {/* Toggle between Login and Forgot Password */}
               <div className="text-center mt-4">
-                <span
-                  className="text-blue-500 cursor-pointer"
-                  onClick={() => setIsForgotPassword(true)}
-                >
-                  Forgot Password?
-                </span>
+                {isForgotPassword ? (
+                  <span
+                    className="text-blue-500 cursor-pointer"
+                    onClick={() => setIsForgotPassword(false)}
+                  >
+                    Back to Login
+                  </span>
+                ) : (
+                  <span
+                    className="text-blue-500 cursor-pointer"
+                    onClick={() => setIsForgotPassword(true)}
+                  >
+                    Forgot Password?
+                  </span>
+                )}
               </div>
             </Form>
           )}

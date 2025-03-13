@@ -7,7 +7,11 @@ const useAuthStore = create((set) => ({
   initializeAuth: () => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("accessToken");
-      if (token) set({ isAuthenticated: true });
+      if (token){
+set({ isAuthenticated: true });
+return true
+      } 
+      return false
     }
   },
 

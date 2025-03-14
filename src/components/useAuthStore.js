@@ -1,31 +1,36 @@
 import { create } from "zustand";
 
-const useAuthStore = create((set) => ({
+const useAuthStore = create((set, get) => ({
   isAuthenticated: false,
   user: null,
-  
+
   initializeAuth: () => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("accessToken");
-      if (token){
-set({ isAuthenticated: true });
-return true
-      } 
-      return false
+      const userData = localStorage.getItem("user");
+
+      if (token && userData) {
+        set({ isAuthenticated: true, user: JSON.parse(userData) }, false);
+        return true; // Ensures we return true only when update is done
+      }
     }
+    return false;
   },
 
-  login: (token) => {
+  login: (token, user) => {
     localStorage.setItem("accessToken", token);
-    set({ isAuthenticated: true });
+    localStorage.setItem("user", JSON.stringify(user));
+    set({ isAuthenticated: true, user });
   },
 
   logout: () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
     set({ isAuthenticated: false, user: null });
   },
 
   setUser: (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
     set({ user });
   },
 }));

@@ -69,10 +69,11 @@ const Login = () => {
       />
 
       {/* Login Form */}
-      <div className="relative z-10 w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+
+      <div className="relative z-10 w-full max-w-md p-6 rounded-lg shadow-lg bg-black/20 backdrop-blur-sm">
         <div className="flex flex-col items-center">
-          <Image src={Logo} alt="Logo" width={80} height={80} />
-          <h2 className="text-2xl font-bold text-gray-800 mt-4">
+          <Image className="bg-white rounded-md" src={Logo} alt="Logo" width={80} height={80} />
+          <h2 className="text-2xl font-bold text-white mt-4">
             {isForgotPassword ? "Forgot Password" : "Sign in"}
           </h2>
         </div>
@@ -92,7 +93,7 @@ const Login = () => {
 
               {/* Email Field */}
               <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700">
+                <label htmlFor="email" className="block text-white">
                   Email
                 </label>
                 <Field
@@ -113,7 +114,7 @@ const Login = () => {
               {/* Password Field (Only in Login Mode) */}
               {!isForgotPassword && (
                 <div className="mb-4">
-                  <label htmlFor="password" className="block text-gray-700">
+                  <label htmlFor="password" className="block text-white">
                     Password
                   </label>
                   <Field
@@ -135,7 +136,7 @@ const Login = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white font-medium py-2 rounded-lg hover:bg-blue-600"
+                className="w-full bg-[var(--priBtn)] text-white font-medium py-2 rounded-lg hover:bg-[var(--priBtnHover)]"
                 disabled={isSubmitting}
               >
                 {isSubmitting

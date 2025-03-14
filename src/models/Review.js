@@ -1,12 +1,36 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const reviewSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  hotelId: { type: mongoose.Schema.Types.ObjectId, ref: "Hotel", required: true },
-  rating: { type: Number, required: true, min: 1, max: 5 },
-  comment: { type: String },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+const reviewSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // User model se connected rahega
+      required: true,
+    },
+    hotel: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Hotel",
+    },
+    room: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
+    },
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5, // 1 to 5 rating system
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-export default mongoose.models.Review ||  mongoose.model("Review", reviewSchema);
+// Ek hi user ek hotel/room pe multiple baar review na de
+reviewSchema.index({ user: 1, hotel: 1 }, { unique: true });
+reviewSchema.index({ user: 1, room: 1 }, { unique: true });
+
+export default mongoose.models.Review || mongoose.model("Review", reviewSchema);

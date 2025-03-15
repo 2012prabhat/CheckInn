@@ -1,18 +1,19 @@
 // app/bookings/success/page.js
 "use client"; // Mark the component as a Client Component
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import api from "@/components/api";
 
 export const dynamic = "force-dynamic"; // Disable prerendering
 
-const SuccessPage = () => {
-  const router = useRouter();
+// Main SuccessPage component
+const SuccessPageContent = () => {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id"); // Get the session ID from query params
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     if (!sessionId) return;
@@ -84,6 +85,15 @@ const SuccessPage = () => {
         </button>
       </div>
     </div>
+  );
+};
+
+// Wrap the SuccessPageContent in a Suspense boundary
+const SuccessPage = () => {
+  return (
+    <Suspense fallback={<div className="container mx-auto p-4">Loading...</div>}>
+      <SuccessPageContent />
+    </Suspense>
   );
 };
 

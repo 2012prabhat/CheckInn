@@ -1,22 +1,31 @@
-// middleware/authMiddleware.js
-import { NextResponse } from 'next/server'; // Correct import
+import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
 export async function middleware(req) {
-  const { pathname } = req.nextUrl;
+  const url = req.nextUrl;
+  const pathname = url.pathname;
+  const method = req.method;
 
-  // Exclude certain paths from authentication
-  if (pathname.startsWith('/api/auth') || pathname.startsWith('/api/hotels')) {
+  // ✅ Publicly allow GET requests for /api/hotels
+  if (pathname.startsWith('/api/hotels') && method === 'GET') {
+    console.log("✅ Allowing public GET request to /api/hotels");
     return NextResponse.next();
   }
 
-  // Get the token from the Authorization header
+  // ✅ Allow authentication routes
+  if (pathname.startsWith('/api/auth')) {
+    console.log("✅ Allowing public auth route");
+    return NextResponse.next();
+  }
+
+  // 🔹 Get the token from the Authorization header
   const authHeader = req.headers.get('authorization');
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
+    console.log("❌ Unauthorized: No token found");
     return new NextResponse(JSON.stringify({ message: 'Unauthorized' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
@@ -24,21 +33,19 @@ export async function middleware(req) {
   }
 
   try {
-    // Verify the token using jose
+    // 🔹 Verify the token using jose
     const secret = new TextEncoder().encode(ACCESS_TOKEN_SECRET);
     const { payload } = await jwtVerify(token, secret);
 
-    // Clone the request headers and add the user data
+    console.log("✅ Token verified for user:", payload);
+
+    // 🔹 Attach user to request headers
     const headers = new Headers(req.headers);
     headers.set('x-user', JSON.stringify(payload));
 
-    // Return a new response with the updated headers
-    return NextResponse.next({
-      request: {
-        headers,
-      },
-    });
+    return NextResponse.next({ request: { headers } });
   } catch (err) {
+    console.log("❌ Invalid Token:", err);
     return new NextResponse(JSON.stringify({ message: 'Invalid token' }), {
       status: 403,
       headers: { 'Content-Type': 'application/json' },
@@ -47,5 +54,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: '/api/:path*', // Apply middleware to all API routes
+  matcher: '/api/:path*',
 };

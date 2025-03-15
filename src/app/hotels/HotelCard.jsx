@@ -2,31 +2,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion"; // Import Framer Motion
+import Emoji from '@/components/Emoji'
 
 function HotelCard({ hotel }) {
   const router = useRouter();
   const [mainImg, setMainImg] = useState(hotel.images[0]);
 
-  const getIcon = (amenitie) => {
-    switch (amenitie) {
-      case "pool":
-        return "🏊‍♂️";
-      case "wifi":
-        return "🛜";
-      case "spa":
-        return "🧖";
-      case "restaurant":
-      case "fine dining":
-        return "🍽️";
-      case "fitness center":
-      case "gym":
-        return "💪";
-      case "boating":
-        return "🚣";
-      default:
-        return "";
-    }
-  };
+
+  
 
   // Handle image change with animation
   const handleImageChange = (img) => {
@@ -42,15 +25,16 @@ function HotelCard({ hotel }) {
           initial={{ opacity: 0, x: -50 }} // Slide from left
           animate={{ opacity: 1, x: 0 }} // Animate to normal position
           transition={{ duration: 0.3 }} // Smooth transition
-          className="w-full"
+          className="w-full flex justify-center"
         >
           <Image
             className="rounded-lg w-full max-w-[350px] lg:min-w-[300px]"
             width={300}
             height={200}
-            src={`/hotels/${mainImg}`}
+            src={mainImg}
             alt={hotel.name}
           />
+      
         </motion.div>
 
         {/* Thumbnail Images */}
@@ -63,7 +47,7 @@ function HotelCard({ hotel }) {
               }`}
               width={50}
               height={50}
-              src={`/hotels/${img}`}
+              src={img}
               onClick={() => handleImageChange(img)}
               alt={`Thumbnail ${i + 1}`}
             />
@@ -89,7 +73,7 @@ function HotelCard({ hotel }) {
                 key={i}
                 className="bg-gray-200 px-3 py-1 rounded-md text-sm flex items-center gap-1"
               >
-                {getIcon(m.toLowerCase())} {m}
+                {Emoji(m.toLowerCase())} {m}
               </span>
             ))}
           </div>
@@ -98,7 +82,7 @@ function HotelCard({ hotel }) {
         {/* Pricing & Buttons */}
         <div className="flex flex-col lg:flex-row gap-4 items-center justify-center lg:justify-start mt-6">
           <div className="font-semibold text-3xl text-blue-600">
-            ₹ {hotel.pricePerNight}
+            ₹ {hotel.price}
           </div>
           <div className="flex gap-3">
             <button

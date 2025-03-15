@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
 
     // If unauthorized and token refresh is needed
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 || error.response?.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
       const newToken = await refreshAccessToken();
       if (newToken) {

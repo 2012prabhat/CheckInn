@@ -1,26 +1,28 @@
-// pages/bookings/success.js
+// app/bookings/success/page.js
 "use client"; // Mark the component as a Client Component
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import api from "@/components/api";
 
+export const dynamic = "force-dynamic"; // Disable prerendering
+
 const SuccessPage = () => {
   const router = useRouter();
-  const searchParams = useSearchParams(); // Use useSearchParams to access query parameters
-  const session_id = searchParams.get("session_id"); // Get the session_id from query params
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id"); // Get the session ID from query params
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!session_id) return;
+    if (!sessionId) return;
 
-    // Fetch booking details using the session ID
     const fetchBookingDetails = async () => {
       try {
-        const response = await api.get(`/bookings/details?sessionId=${session_id}`);
-        if (response.data) {
-          setBooking(response.data);
+        // Fetch the booking details
+        const bookingResponse = await api.get(`/bookings/details?sessionId=${sessionId}`);
+        if (bookingResponse.data) {
+          setBooking(bookingResponse.data);
         } else {
           setError("Booking details not found.");
         }
@@ -32,7 +34,7 @@ const SuccessPage = () => {
     };
 
     fetchBookingDetails();
-  }, [session_id]);
+  }, [sessionId]);
 
   if (loading) {
     return <div className="container mx-auto p-4">Loading...</div>;

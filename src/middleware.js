@@ -9,6 +9,9 @@ export async function middleware(req) {
   const method = req.method;
 
   // ✅ Publicly allow GET requests for /api/hotels
+  if (pathname.startsWith("/api/webhook")) {
+    return NextResponse.next();
+  }
   if (pathname.startsWith('/api/hotels') && method === 'GET') {
     console.log("✅ Allowing public GET request to /api/hotels");
     return NextResponse.next();

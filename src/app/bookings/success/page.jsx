@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import api from "@/components/api";
+import Loader from "@/components/Loader";
 
 export const dynamic = "force-dynamic"; // Disable prerendering
 
@@ -38,7 +39,7 @@ const SuccessPageContent = () => {
   }, [sessionId]);
 
   if (loading) {
-    return <div className="container mx-auto p-4">Loading...</div>;
+    return <Loader />
   }
 
   if (error) {
@@ -79,7 +80,7 @@ const SuccessPageContent = () => {
       <div className="mt-6">
         <button
           onClick={() => router.push("/")}
-          className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+          className="secBtn"
         >
           Back to Home
         </button>
@@ -91,7 +92,7 @@ const SuccessPageContent = () => {
 // Wrap the SuccessPageContent in a Suspense boundary
 const SuccessPage = () => {
   return (
-    <Suspense fallback={<div className="container mx-auto p-4">Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <SuccessPageContent />
     </Suspense>
   );

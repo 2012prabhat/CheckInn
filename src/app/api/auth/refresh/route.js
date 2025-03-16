@@ -15,11 +15,11 @@ export async function GET(req) {
 
     // Generate new Access Token
     const newAccessToken = jwt.sign(
-      { id: user.id, role: user.role },
+      { userId: user.userId, email: user.email, role:user.role },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: process.env.ACCESS_TOKEN_TIME }
     );
-
+ 
     const response = NextResponse.json({ message: "Token refreshed",accessToken:newAccessToken });
 
     // Set new access token in cookies

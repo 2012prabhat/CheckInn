@@ -7,18 +7,18 @@ import LandingPage from "./LandingPage";
 
 export default function Home() {
   const router = useRouter();
-  const { isAuthenticated, initializeAuth } = useAuthStore();
+  // const { isAuthenticated, initializeAuth } = useAuthStore();
 
   useEffect(() => {
-    checkAuth()
+    // checkAuth()
   }, []);
 
-  const checkAuth = async ()=>{
-    const authState = await initializeAuth(); 
-    if(!authState){
-      router.replace("/login");
-    }
-  }
+  // const checkAuth = async ()=>{
+  //   const authState = await initializeAuth(); 
+  //   if(!authState){
+  //     router.replace("/login");
+  //   }
+  // }
 
   // if (!isAuthenticated) {
   //   return <div>Redirecting to login...</div>;

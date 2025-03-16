@@ -4,6 +4,7 @@ import logo from "/public/logo.png";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import useAuthStore from "@/components/useAuthStore";
+import api from "@/components/api"
 
 export default function Navbar() {
   const router = useRouter();
@@ -24,10 +25,15 @@ export default function Navbar() {
     };
   }, []);
 
-  const handleLogout = () => {
-    setDropdownOpen(false); // Dropdown close karna
-    logout(); // Logout function call karna
-    router.push("/login"); // Login page pe redirect
+  const handleLogout = async () => {
+    try{
+      setDropdownOpen(false); // Dropdown close karna
+      const resp = await api.post('/auth/logout')
+      logout(); // Logout function call karna
+      router.push("/login"); // Login page pe redirect
+    }catch(err){
+      console.log(err);
+    }
   };
 
   // **Fix: Hooks ke baad return statement likhna**

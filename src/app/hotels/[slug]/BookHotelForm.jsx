@@ -64,7 +64,7 @@ const BookHotelForm = ({ hotelId, totalPrice }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="p-6 px-12 space-y-4 flex-col flex justify-center">
       {/* Customer Name */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -148,7 +148,7 @@ const BookHotelForm = ({ hotelId, totalPrice }) => {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-blue-300"
+        className="priBtn"
       >
         {loading ? "Processing..." : "Book Now"}
       </button>

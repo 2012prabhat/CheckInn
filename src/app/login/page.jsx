@@ -72,7 +72,7 @@ const Login = () => {
 
       <div className="relative z-10 w-full max-w-md p-6 rounded-lg shadow-lg bg-black/20 backdrop-blur-sm">
         <div className="flex flex-col items-center">
-          <Image className="bg-white rounded-md" src={Logo} alt="Logo" width={80} height={80} />
+          <Image onClick={()=>router.push("/")} className="bg-white rounded-md cursor-pointer" src={Logo} alt="Logo" width={80} height={80} />
           <h2 className="text-2xl font-bold text-white mt-4">
             {isForgotPassword ? "Forgot Password" : "Sign in"}
           </h2>

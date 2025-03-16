@@ -15,8 +15,14 @@ export async function POST(req) {
 
     // Get user from the header
     const userHeader = req.headers.get("x-user");
-    const user = userHeader ? JSON.parse(userHeader) : null;
+    console.log("User from header:", userHeader); // 🔍 Debugging
 
+        if (!userHeader) {
+            return Response.json({ message: "User not found in headers" }, { status: 400 });
+        }
+        
+    const user = userHeader ? JSON.parse(userHeader) : null;
+     console.log("this is user ",user)
     if (!user) {
       return new Response(JSON.stringify({ error: "Unauthorized! Please log in." }), {
         status: 401,

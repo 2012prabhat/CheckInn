@@ -16,6 +16,8 @@ function HotelCard({ hotel }) {
     setMainImg(img);
   };
 
+
+
   return (
     <div className="flex flex-col lg:flex-row p-4 bg-[var(--mainCo)] w-full lg:w-[95vw] rounded-lg shadow-md">
       {/* Image Section */}
@@ -39,7 +41,7 @@ function HotelCard({ hotel }) {
 
         {/* Thumbnail Images */}
         <div className="flex gap-2 mt-2 w-full justify-center">
-          {hotel.images.map((img, i) => (
+          {hotel?.images?.map((img, i) => (
             <Image
               key={i}
               className={`cursor-pointer transition-all rounded-md ${
@@ -68,7 +70,7 @@ function HotelCard({ hotel }) {
         <div className="mt-2">
           <h3 className="font-medium">Amenities</h3>
           <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt-1">
-            {hotel.amenities.map((m, i) => (
+            {hotel?.amenities?.map((m, i) => (
               <span
                 key={i}
                 className="bg-gray-200 px-3 py-1 rounded-md text-sm flex items-center gap-1"
@@ -91,7 +93,7 @@ function HotelCard({ hotel }) {
             >
               View Details
             </button>
-            <button className="priBtn py-2 px-4 text-sm lg:text-base">
+            <button className="priBtn py-2 px-4 text-sm lg:text-base"  onClick={() => router.push(`/hotels/${hotel.slug}?book=true`)}>
               Book Now
             </button>
           </div>

@@ -7,27 +7,25 @@ export async function middleware(req) {
   const url = req.nextUrl;
   const pathname = url.pathname;
   const method = req.method;
+  const slug = url.searchParams.get('slug'); // Check if `slug` exists in query params
 
-  // ✅ Publicly allow GET requests for /api/hotels
-  if (pathname.startsWith("/api/webhook")) {
-    return NextResponse.next();
-  }
-  if (pathname.startsWith('/api/hotels') && method === 'GET') {
-    console.log("✅ Allowing public GET request to /api/hotels");
-    return NextResponse.next();
-  }
+  console.log("Middleware triggered:", { pathname, method, slug });
 
-  // ✅ Allow authentication routes
-  if (pathname.startsWith('/api/auth')) {
-    console.log("✅ Allowing public auth route");
+  // ✅ Allow public access to auth and webhook routes
+  if (pathname.startsWith('/api/auth') || pathname.startsWith("/api/webhook")) {
+    console.log("✅ Allowing public route:", pathname);
     return NextResponse.next();
   }
 
-  // 🔹 Get the token from the Authorization header
+  // ✅ Allow GET /api/hotels only if there's NO slug in query params
+  if (pathname === '/api/hotels' && method === 'GET' && !slug) {
+    console.log("✅ Allowing public GET request to /api/hotels (without slug)");
+    return NextResponse.next();
+  }
+
+  // 🔹 Restrict all other API routes, including GET /api/hotels?slug=...
   const authHeader = req.headers.get('authorization');
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     console.log("❌ Unauthorized: No token found");
     return new NextResponse(JSON.stringify({ message: 'Unauthorized' }), {
       status: 401,
@@ -35,20 +33,24 @@ export async function middleware(req) {
     });
   }
 
+  const token = authHeader.split(' ')[1];
+
   try {
     // 🔹 Verify the token using jose
     const secret = new TextEncoder().encode(ACCESS_TOKEN_SECRET);
     const { payload } = await jwtVerify(token, secret);
 
-    console.log("✅ Token verified for user:", payload);
-
     // 🔹 Attach user to request headers
     const headers = new Headers(req.headers);
     headers.set('x-user', JSON.stringify(payload));
 
-    return NextResponse.next({ request: { headers } });
+    return NextResponse.next({
+      request: {
+        headers,
+      },
+    });
   } catch (err) {
-    console.log("❌ Invalid Token:", err);
+    console.log("❌ Invalid token:", err.message);
     return new NextResponse(JSON.stringify({ message: 'Invalid token' }), {
       status: 403,
       headers: { 'Content-Type': 'application/json' },

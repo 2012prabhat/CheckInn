@@ -30,7 +30,7 @@ export async function POST(req) {
 
     // Generate Refresh Token (long-lived)
     const refreshToken = jwt.sign(
-      { userId: user._id },
+      { userId: user._id, email: user.email, role:user.role },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: process.env.REFRESH_TOKEN_TIME}
     );

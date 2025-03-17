@@ -6,11 +6,14 @@ import { useRouter, usePathname } from "next/navigation";
 import useAuthStore from "@/components/useAuthStore";
 import api from "@/components/api"
 
+
 export default function Navbar() {
   const router = useRouter();
   const path = usePathname();
   const { isAuthenticated, user, logout } = useAuthStore();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+ 
+
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -37,7 +40,7 @@ export default function Navbar() {
   };
 
   // **Fix: Hooks ke baad return statement likhna**
-  const hiddenPaths = ["/login", "/register"];
+  const hiddenPaths = ["/login", "/register",'/reset-password','/verify-email'];
   if (hiddenPaths.includes(path)) {
     return null;
   }
@@ -50,7 +53,7 @@ export default function Navbar() {
     <div className="bg-[var(--mainCol)] h-14 flex items-center shadow-sm justify-between px-4 sticky top-0 z-50">
       {/* Logo */}
       <Image
-        className="w-16 cursor-pointer"
+        className="w-16 cursor-pointer bg-[white] border-0 rounded-md"
         src={logo}
         alt="CheckInn Logo"
         onClick={() => router.push("/")}
@@ -65,10 +68,10 @@ export default function Navbar() {
               className="flex items-center gap-2 cursor-pointer dropdown-menu"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              <div className="font-semibold">{user?.name}</div>
+              <div className="font-semibold text-[var(--textCol)]">{user?.name}</div>
               <Image
                 className="w-10 h-10 rounded-full border-2 border-white"
-                src={user?.profileImg || "/userAvatar.png"} // Default avatar if no image
+                src={user?.profileImg || "/userAvatar.png"}
                 alt="Profile"
                 width={40}
                 height={40}

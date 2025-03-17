@@ -15,7 +15,7 @@ export default async function sendEmail(to, subject, html) {
 
     // Email options
     const mailOptions = {
-      from: `"Project Management System" <${process.env.EMAIL_USER}>`,
+      from: process.env.BRAND_NAME,
       to,
       subject,
       html,

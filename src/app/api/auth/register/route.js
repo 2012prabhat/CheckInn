@@ -32,10 +32,10 @@ export async function POST(req) {
     const html = `
   <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9;">
     <div style="text-align: center;">
-      <img src="https://your-company-logo-url.com/logo.png" alt="CheckInn Logo" style="width: 120px; margin-bottom: 10px;">
+      <img src=${process.env.BRAND_LOGO} alt="logo" style="width: 120px; margin-bottom: 10px;">
       <h2 style="color: #333;">Verify Your Email</h2>
-      <p style="color: #555;">Hello,</p>
-      <p style="color: #555;">Thank you for registering with <b>CheckInn</b>. Please verify your email to complete your registration.</p>
+      <p style="color: #555;">Hello, ${name}</p>
+      <p style="color: #555;">Thank you for registering with <b>${process.env.BRAND_NAME}</b>. Please verify your email to complete your registration.</p>
       <a href="${verificationLink}" 
          style="background-color: #007bff; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; display: inline-block; font-size: 16px; font-weight: bold;">
         Verify Email
@@ -45,7 +45,7 @@ export async function POST(req) {
     </div>
     <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
     <p style="text-align: center; font-size: 14px; color: #777;">If you didn't request this, please ignore this email.</p>
-    <p style="text-align: center; font-size: 14px; color: #777;">Need help? Contact us at <a href="mailto:support@checkInn.com" style="color: #007bff;">support@checkInn.com</a></p>
+    <p style="text-align: center; font-size: 14px; color: #777;">Need help? Contact us at <a href="mailto:support@${process.env.BRAND_NAME}.com" style="color: #007bff;">support@${process.env.BRAND_NAME}.com</a></p>
   </div>
 `;
 

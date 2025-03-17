@@ -44,7 +44,8 @@ export async function POST(req) {
         id:user._id,
         name:user.name,
         email:user.email,
-        role:user.role
+        role:user.role,
+        profileImg:user.profileImg
       }
     });
 

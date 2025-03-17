@@ -17,9 +17,10 @@ body{
   --priBtnHover:rgba(52, 152, 115,1.0);
   --secBtn:rgba(52, 152, 219,1.0);
   --secBtnHover:rgba(52, 152, 319,1.0);
+  --textCol:white;
 }
 .light{
-  --mainCol:rgba(236, 240, 241,1.0);
+  --mainCol:#2f3542;
    color: black;
 }
 

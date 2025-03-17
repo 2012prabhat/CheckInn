@@ -30,17 +30,17 @@ export async function POST(req) {
     await user.save();
 
     // Create password reset link
-    const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}reset-password?token=${resetToken}`;
 
     // Email Template
     const subject = "Password Reset Request";
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9;">
         <div style="text-align: center;">
-          <img src="https://your-company-logo-url.com/logo.png" alt="CheckInnLogo" style="width: 120px; margin-bottom: 10px;">
+          <img src=${process.env.BRAND_LOGO} alt="" style="width: 120px; margin-bottom: 10px;">
           <h2 style="color: #333;">Reset Your Password</h2>
           <p style="color: #555;">Hello,</p>
-          <p style="color: #555;">We received a request to reset your password for <b>CheckInn</b>. Click the button below to set a new password.</p>
+          <p style="color: #555;">We received a request to reset your password for <b>${process.env.BRAND_NAME}</b>. Click the button below to set a new password.</p>
           <a href="${resetLink}" 
             style="background-color: #ff4c4c; color: white; text-decoration: none; padding: 12px 20px; border-radius: 5px; display: inline-block; font-size: 16px; font-weight: bold;">
             Reset Password
@@ -51,7 +51,7 @@ export async function POST(req) {
         </div>
         <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
         <p style="text-align: center; font-size: 14px; color: #777;">If you didn’t request this, please ignore this email.</p>
-        <p style="text-align: center; font-size: 14px; color: #777;">Need help? Contact us at <a href="mailto:support@checkInn.com" style="color: #ff4c4c;">support@checkInn.com</a></p>
+        <p style="text-align: center; font-size: 14px; color: #777;">Need help? Contact us at <a href="mailto:support@${process.env.BRAND_NAME}.com" style="color: #ff4c4c;">support@${process.env.BRAND_NAME}.com</a></p>
       </div>
     `;
 

@@ -40,6 +40,7 @@ export default function UserProfile() {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+            console.log(response)
             setUser({ ...user, profileImg: response.data.profileImg }); // Update Zustand store
         } catch (error) {
             console.error('Image upload failed:', error);
@@ -69,7 +70,7 @@ export default function UserProfile() {
                 />
                 {/* Edit Icon */}
                 <button 
-                    className="absolute bottom-2 right-2 bg-gray-700 text-white p-2 rounded-full shadow-md hover:bg-gray-800"
+                    className="absolute bottom-2  bg-gray-700 text-white p-2 rounded-full shadow-md hover:bg-gray-800"
                     onClick={handleImageClick}
                 >
                     <FaCamera />

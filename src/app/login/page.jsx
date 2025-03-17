@@ -152,19 +152,29 @@ const Login = () => {
               <div className="text-center mt-4">
                 {isForgotPassword ? (
                   <span
-                    className="text-blue-500 cursor-pointer"
+                    className="text-yellow-500 cursor-pointer"
                     onClick={() => setIsForgotPassword(false)}
                   >
                     Back to Login
                   </span>
                 ) : (
+                  <>
                   <span
-                    className="text-blue-500 cursor-pointer"
+                    className="text-yellow-500 cursor-pointer"
                     onClick={() => setIsForgotPassword(true)}
-                  >
+                    >
                     Forgot Password?
                   </span>
+
+                  <span
+                    className="ml-8 text-yellow-500 cursor-pointer"
+                    onClick={() => router.push('/register')}
+                    >
+                    Create an account
+                  </span>
+                    </>
                 )}
+                
               </div>
             </Form>
           )}

@@ -33,10 +33,10 @@ export async function PATCH(req) {
     }
 
     // Hash the new password
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    // const hashedPassword = await bcrypt.hash(newPassword, 12);
 
     // Update user password and remove reset token
-    user.password = hashedPassword;
+    user.password = newPassword;
     user.resetToken = undefined;
     user.resetTokenExpiry = undefined;
 

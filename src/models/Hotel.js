@@ -45,7 +45,7 @@ const hotelSchema = new mongoose.Schema(
       default: [],
     },
     price: {
-      type: Number, // 💰 Room price per night
+      type: `Number`, // 💰 Room price per night
       required: true,
     },
     rating: {

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -8,11 +8,16 @@ import Image from "next/image";
 import Logo from "/public/logo.png";
 import LoginBg from "/public/loginBg.jpg";
 
-const ResetPassword = () => {
+const ResetPasswordContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const [token, setToken] = useState(null);
   const [error, setError] = useState("");
+
+  // ✅ Extract token inside useEffect to avoid Suspense issues
+  useEffect(() => {
+    setToken(searchParams.get("token"));
+  }, [searchParams]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
@@ -50,7 +55,14 @@ const ResetPassword = () => {
       {/* Reset Password Form */}
       <div className="relative z-10 w-full max-w-md p-6 rounded-lg shadow-lg bg-black/20 backdrop-blur-sm">
         <div className="flex flex-col items-center">
-          <Image onClick={() => router.push("/")} className="bg-white rounded-md cursor-pointer" src={Logo} alt="Logo" width={80} height={80} />
+          <Image
+            onClick={() => router.push("/")}
+            className="bg-white rounded-md cursor-pointer"
+            src={Logo}
+            alt="Logo"
+            width={80}
+            height={80}
+          />
           <h2 className="text-2xl font-bold text-white mt-4">Reset Password</h2>
         </div>
 
@@ -67,20 +79,46 @@ const ResetPassword = () => {
 
               {/* New Password */}
               <div className="mb-4">
-                <label htmlFor="newPassword" className="block text-white">New Password</label>
-                <Field type="password" name="newPassword" className="w-full border rounded-lg px-4 py-2" placeholder="Enter new password" />
-                <ErrorMessage name="newPassword" component="div" className="text-red-500 text-sm" />
+                <label htmlFor="newPassword" className="block text-white">
+                  New Password
+                </label>
+                <Field
+                  type="password"
+                  name="newPassword"
+                  className="w-full border rounded-lg px-4 py-2"
+                  placeholder="Enter new password"
+                />
+                <ErrorMessage
+                  name="newPassword"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
               </div>
 
               {/* Confirm Password */}
               <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block text-white">Confirm Password</label>
-                <Field type="password" name="confirmPassword" className="w-full border rounded-lg px-4 py-2" placeholder="Confirm new password" />
-                <ErrorMessage name="confirmPassword" component="div" className="text-red-500 text-sm" />
+                <label htmlFor="confirmPassword" className="block text-white">
+                  Confirm Password
+                </label>
+                <Field
+                  type="password"
+                  name="confirmPassword"
+                  className="w-full border rounded-lg px-4 py-2"
+                  placeholder="Confirm new password"
+                />
+                <ErrorMessage
+                  name="confirmPassword"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
               </div>
 
               {/* Submit Button */}
-              <button type="submit" className="w-full bg-[var(--priBtn)] text-white font-medium py-2 rounded-lg hover:bg-[var(--priBtnHover)]" disabled={isSubmitting}>
+              <button
+                type="submit"
+                className="w-full bg-[var(--priBtn)] text-white font-medium py-2 rounded-lg hover:bg-[var(--priBtnHover)]"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Processing..." : "Reset Password"}
               </button>
             </Form>
@@ -88,6 +126,15 @@ const ResetPassword = () => {
         </Formik>
       </div>
     </div>
+  );
+};
+
+// ✅ Suspense Wrapper for `useSearchParams()`
+const ResetPassword = () => {
+  return (
+    <Suspense fallback={<div className="text-white text-center">Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 };
 

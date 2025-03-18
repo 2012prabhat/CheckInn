@@ -1,22 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
 import Logo from "/public/logo.png";
 import LoginBg from "/public/loginBg.jpg";
 
-const VerifyEmail = () => {
+const VerifyEmailContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const [token, setToken] = useState(null);
   const [message, setMessage] = useState("Verifying your email...");
 
   useEffect(() => {
-    if (!token) {
-      setMessage("Invalid or missing verification token.");
-      return;
-    }
+    setToken(searchParams.get("token"));
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!token) return;
 
     const verifyEmail = async () => {
       try {
@@ -32,7 +33,7 @@ const VerifyEmail = () => {
 
   return (
     <div className="relative flex items-center justify-center min-h-screen">
-      {/* Background Image with Blur Effect */}
+      {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center before:absolute before:inset-0 before:bg-black/40 before:backdrop-blur-sm"
         style={{ backgroundImage: `url(${LoginBg.src})` }}
@@ -52,6 +53,15 @@ const VerifyEmail = () => {
         <p className="text-white text-lg font-semibold mt-4">{message}</p>
       </div>
     </div>
+  );
+};
+
+// ✅ Suspense Wrapper for `useSearchParams()`
+const VerifyEmail = () => {
+  return (
+    <Suspense fallback={<div className="text-white text-center">Loading...</div>}>
+      <VerifyEmailContent />
+    </Suspense>
   );
 };
 

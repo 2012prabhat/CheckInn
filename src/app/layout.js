@@ -1,4 +1,5 @@
 "use client";
+import { Providers } from "./Provider";
 import { useEffect, useState } from "react";
 import Head from "next/head"; // ✅ Correct way to handle <title> and <meta>
 import "./globals.css";
@@ -31,8 +32,10 @@ export default function RootLayout({ children }) {
         <meta name="description" content="Find and book hotels easily!" />
       </Head>
       <body className="overflow-auto light">
+        <Providers>
         <Navbar />
         {children}
+        </Providers>
       </body>
     </html>
   );

@@ -14,6 +14,7 @@ import Loader from '@/components/Loader';
 import BookHotelForm from './BookHotelForm';
 import useAuthStore from '@/components/useAuthStore';
 import NotAuthenticated from '@/components/NotAuthenticated';
+import Reviews from './Reviews';
 
 export default function Page() {
     const scrollRef = useRef(null);
@@ -114,6 +115,8 @@ export default function Page() {
                     Book Now
                 </button>
             </div>
+
+            <Reviews hotelId={hotel?._id} />
 
             {/* Booking Form */}
             <div ref={scrollRef}>

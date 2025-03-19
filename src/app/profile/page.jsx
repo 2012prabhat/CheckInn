@@ -87,7 +87,8 @@ export default function UserProfile() {
             {/* User Info */}
             <h2 className="text-2xl font-semibold text-center mt-4">{user?.name}</h2>
             <p className="text-gray-600 text-center">{user?.email}</p>
-            <p className="text-gray-500 text-center text-sm mt-1 capitalize">{user?.role}</p>
+            {user?.role === 'admin' &&             <p className="font-bold text-gray-500 text-center text-sm mt-1 capitalize">{user?.role}</p>}
+
 
             {/* Logout Button */}
             <div className="mt-6">

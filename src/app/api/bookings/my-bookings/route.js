@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Booking from "@/models/Booking";
 import { applyPagination } from "@/lib/apiFeatures";
+import Hotel from "@/models/Hotel";
 
 export const GET = async (req) => {
   try {
@@ -34,6 +35,7 @@ export const GET = async (req) => {
       pagination,
     });
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ message: "Failed to fetch bookings" }, { status: 500 });
   }
 };

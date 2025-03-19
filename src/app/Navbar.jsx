@@ -10,6 +10,7 @@ import api from "@/components/api"
 export default function Navbar() {
   const router = useRouter();
   const path = usePathname();
+  console.log(path)
   const { isAuthenticated, user, logout } = useAuthStore();
   const [dropdownOpen, setDropdownOpen] = useState(false);
  
@@ -52,13 +53,28 @@ export default function Navbar() {
   return (
     <div className="bg-[var(--mainCol)] h-14 flex items-center shadow-sm justify-between px-4 sticky top-0 z-50">
       {/* Logo */}
+      <div className="flex">
+
       <Image
         className="w-16 cursor-pointer bg-[white] border-0 rounded-md"
         src={logo}
         alt="CheckInn Logo"
         onClick={() => router.push("/")}
-      />
+        />
 
+         {/* Menu buttons */}
+         {user?.role === "admin" &&       <div className="flex justify-center items-center ml-8 gap-x-8">
+          <div className={`text-[var(--textCol)] shadow-2xl cursor-pointer p-2 ${path=='/bookings' && "border-[var(--priBtn)] border-b-4 "}`} onClick={()=>router.push("/bookings")}>My Bookings</div>
+
+          <div className={`text-[var(--textCol)] shadow-2xl cursor-pointer p-2 ${path.startsWith('/hotels') && "border-[var(--priBtn)] border-b-4 "}`} onClick={()=>router.push("/hotels")}>Book hotels</div>
+
+
+          <div className={`text-[var(--textCol)] shadow-2xl cursor-pointer p-2 ${path=='/admin' && "border-[var(--priBtn)] border-b-4 "}`} onClick={()=>router.push("/admin")}>Admin Panel</div>
+
+        </div>}
+  
+
+        </div>
       {/* Auth Section */}
       <div className="relative flex items-center gap-4">
         {isAuthenticated ? (

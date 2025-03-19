@@ -15,7 +15,7 @@ export async function GET(req) {
     }
   
     try {
-      const reviews = await Review.find({ hotel: hotel }).populate("user", "name email");
+      const reviews = await Review.find({ hotel: hotel }).populate("user", "name email profileImg");
   
       return NextResponse.json(reviews, { status: 200 });
     } catch (error) {

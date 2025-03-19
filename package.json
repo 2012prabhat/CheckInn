@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^6.0.0",
+    "@tanstack/react-query": "^5.69.0",
     "axios": "^1.8.2",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
@@ -20,6 +21,7 @@
     "fs-extra": "^11.3.0",
     "jose": "^6.0.8",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.483.0",
     "mongoose": "^8.10.1",
     "next": "15.1.7",
     "nodemailer": "^6.10.0",

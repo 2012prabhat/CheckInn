@@ -6,7 +6,7 @@ export default function NotFound() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-56px)] bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-56px)] bg-gray-100  text-gray-800">
       <motion.h1
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}

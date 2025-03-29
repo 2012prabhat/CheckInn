@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CheckInn - Hotel Booking App
 
-## Getting Started
+CheckInn is a full-stack hotel booking application built with **Next.js**, **Mongoose**, and **Zustand** for state management. It provides a seamless experience for users to book hotels, manage their profiles, and make secure payments via **Stripe**.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+✅ User authentication (JWT-based login & signup)  
+✅ Hotel listing & search functionality  
+✅ Secure payment integration with Stripe  
+✅ Profile management  
+✅ Review and rating system (Backend completed)  
+✅ Image upload via backend API  
+✅ Forgot password feature  
+✅ Global state management with Zustand  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Frontend**: Next.js, Tailwind CSS
+- **Backend**: Node.js, Express.js, Mongoose (MongoDB)
+- **Authentication**: JWT
+- **State Management**: Zustand
+- **Payments**: Stripe
+- **Database**: MongoDB
+- **Deployment**: Vercel (Frontend), Render/Fly.io (Backend)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation & Setup
 
-## Learn More
+### Prerequisites
+Ensure you have the following installed:
+- Node.js (>=16)
+- MongoDB
+- pnpm (Package Manager)
 
-To learn more about Next.js, take a look at the following resources:
+### Steps to Run Locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository**
+   ```sh
+   git clone https://github.com/yourusername/checkinn.git
+   cd checkinn
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies**
+   ```sh
+   pnpm install
+   ```
 
-## Deploy on Vercel
+3. **Set up environment variables** (Create a `.env.local` file and add the required variables)
+   ```env
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_secret_key
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Start the development server**
+   ```sh
+   pnpm dev
+   ```
+   The app will be available at `http://localhost:3000`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API Routes
+
+| Method | Endpoint          | Description |
+|--------|------------------|-------------|
+| POST   | `/api/auth/signup` | Register a new user |
+| POST   | `/api/auth/login`  | Authenticate user |
+| GET    | `/api/hotels`     | Fetch all hotels |
+| GET    | `/api/hotels/:id` | Fetch hotel details |
+| POST   | `/api/bookings`   | Book a hotel |
+| POST   | `/api/reviews`    | Submit a review |
+
+## Future Enhancements
+
+- [ ] Implement frontend for the review & rating system
+- [ ] Add an admin panel for hotel management
+- [ ] Enable social login (Google, Facebook)
+- [ ] Improve UI/UX for better user experience
+
+## Contributions
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+## License
+This project is licensed under the MIT License.
+

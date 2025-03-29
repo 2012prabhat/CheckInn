@@ -9,24 +9,23 @@ export async function middleware(req) {
   const method = req.method;
   const slug = url.searchParams.get('slug'); // Check if `slug` exists in query params
 
-  console.log("Middleware triggered:", { pathname, method, slug });
-
   // ✅ Allow public access to auth and webhook routes
   if (pathname.startsWith('/api/auth') || pathname.startsWith("/api/webhook")) {
-    console.log("✅ Allowing public route:", pathname);
     return NextResponse.next();
   }
 
   // ✅ Allow GET /api/hotels only if there's NO slug in query params
   if (pathname === '/api/hotels' && method === 'GET' && !slug) {
-    console.log("✅ Allowing public GET request to /api/hotels (without slug)");
     return NextResponse.next();
   }
 
-  // 🔹 Restrict all other API routes, including GET /api/hotels?slug=...
+  if (pathname === '/api/hotels/near-by') {
+    return NextResponse.next();
+  }
+
+  // 🔹 Check Authorization header
   const authHeader = req.headers.get('authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    console.log("❌ Unauthorized: No token found");
     return new NextResponse(JSON.stringify({ message: 'Unauthorized' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
@@ -40,17 +39,26 @@ export async function middleware(req) {
     const secret = new TextEncoder().encode(ACCESS_TOKEN_SECRET);
     const { payload } = await jwtVerify(token, secret);
 
-    // 🔹 Attach user to request headers
-    const headers = new Headers(req.headers);
-    headers.set('x-user', JSON.stringify(payload));
+    // 🔹 Forward the user info in the request headers
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set('x-user', JSON.stringify(payload));
 
-    return NextResponse.next({
+    const response = NextResponse.next({
       request: {
-        headers,
+        headers: requestHeaders,
       },
     });
+
+    // 🔹 Admin Restriction (Middleware doesn't modify headers for itself)
+    if (pathname.startsWith("/api/admin") && payload.role !== "admin") {
+      return NextResponse.json(
+        { message: "Access denied. Admins only." },
+        { status: 403 }
+      );
+    }
+
+    return response;
   } catch (err) {
-    console.log("❌ Invalid token:", err.message);
     return new NextResponse(JSON.stringify({ message: 'Invalid token' }), {
       status: 403,
       headers: { 'Content-Type': 'application/json' },

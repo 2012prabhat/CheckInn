@@ -69,8 +69,13 @@ const hotelSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    location: {
+      type: { type: String, enum: ["Point"], default: "Point" },
+      coordinates: { type: [Number], required: true }, // [longitude, latitude]
+    }
   },
-  { timestamps: true }
+  { timestamps: true },
+  
 );
 
 // ** Pre-save middleware to generate a slug from name **
@@ -80,5 +85,8 @@ hotelSchema.pre("save", function (next) {
   }
   next();
 });
+
+
+hotelSchema.index({ location: "2dsphere" }); // Geospatial index
 
 export default mongoose.models.Hotel || mongoose.model("Hotel", hotelSchema);

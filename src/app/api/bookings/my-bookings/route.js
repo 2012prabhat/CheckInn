@@ -26,7 +26,7 @@ export const GET = async (req) => {
       { userId: user._id },
       page,
       limit,
-      { path: "hotel", select: "name images" }
+      { path: "hotel", select: "name images slug" }
     );
 
     return NextResponse.json({

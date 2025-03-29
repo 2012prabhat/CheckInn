@@ -21,7 +21,10 @@ export async function GET(req) {
     } catch (error) {
       return NextResponse.json({ message: "Error fetching reviews" }, { status: 500 });
     }
-  }
+}
+
+
+
 export async function POST(req) {
   try {
     await connectDB();
@@ -56,6 +59,10 @@ export async function POST(req) {
 
     await review.save();
 
+    // Push only the review ID to hotel reviews array
+    hotel.reviews.push(review._id);
+    await hotel.save(); // ✅ Save the hotel with updated reviews array
+
     return Response.json(
       { message: "Review submitted successfully", review },
       { status: 201 }
@@ -68,3 +75,4 @@ export async function POST(req) {
     );
   }
 }
+

@@ -1,21 +1,23 @@
 import mongoose from "mongoose";
+import User from "./User"; // Ensure User model is imported
 
 const reviewSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // User model se connected rahega
+      ref: "User", // This must match the model name
       required: true,
     },
     hotel: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hotel",
+      required: true,
     },
     rating: {
       type: Number,
       required: true,
       min: 1,
-      max: 5, // 1 to 5 rating system
+      max: 5,
     },
     comment: {
       type: String,
@@ -25,8 +27,6 @@ const reviewSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Ek hi user ek hotel/room pe multiple baar review na de
 reviewSchema.index({ user: 1, hotel: 1 }, { unique: true });
-reviewSchema.index({ user: 1, room: 1 }, { unique: true });
 
 export default mongoose.models.Review || mongoose.model("Review", reviewSchema);

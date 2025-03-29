@@ -11,24 +11,27 @@ export default function Navbar() {
   const path = usePathname();
   const { isAuthenticated, user, logout } = useAuthStore();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".dropdown-menu")) {
         setDropdownOpen(false);
       }
+      if (!event.target.closest(".mobile-menu") && menuOpen) {
+        setMenuOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [menuOpen]);
 
   const handleLogout = async () => {
     try {
       setDropdownOpen(false);
-      const resp = await api.post("/auth/logout");
+      await api.post("/auth/logout");
       logout();
       router.push("/login");
     } catch (err) {
@@ -44,7 +47,7 @@ export default function Navbar() {
       {/* Left Section: Logo & Mobile Menu Button */}
       <div className="flex items-center gap-4">
         <Image
-          className="w-16 cursor-pointer bg-white border-0 rounded-md"
+          className="w-10 md:w-14 lg:w-14 cursor-pointer bg-white border-0 rounded-sm"
           width={200}
           height={200}
           src="/logo.png"
@@ -60,7 +63,7 @@ export default function Navbar() {
         )}
       </div>
 
-      {/* Center Section: Navigation Links (Left Aligned with Active Border) */}
+      {/* Center Section: Navigation Links */}
       {user?.role === "admin" && (
         <div className="hidden lg:flex gap-x-8 flex-grow pl-10">
           <div
@@ -83,7 +86,7 @@ export default function Navbar() {
 
           <div
             className={`text-[var(--textCol)] cursor-pointer p-2 border-b-4 ${
-              path === "/admin" ? "border-[var(--priBtn)]" : "border-transparent"
+              path.startsWith("/admin") ? "border-[var(--priBtn)]" : "border-transparent"
             }`}
             onClick={() => router.push("/admin")}
           >
@@ -101,7 +104,7 @@ export default function Navbar() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               <div className="font-semibold text-[var(--textCol)]">{user?.name}</div>
-            
+
               <Image
                 className="w-10 h-10 rounded-full border-2 border-white"
                 src={user?.profileImg || "/userAvatar.png"}
@@ -140,9 +143,9 @@ export default function Navbar() {
         )}
       </div>
 
-      {/* Mobile Menu (Visible only when opened) */}
+      {/* Mobile Menu */}
       {menuOpen && user?.role === "admin" && (
-        <div className="absolute top-14 left-0 w-full bg-gray-800 text-white shadow-md flex flex-col lg:hidden">
+        <div className="absolute top-14 left-0 w-full bg-gray-800 text-white shadow-md flex flex-col lg:hidden mobile-menu">
           <div
             className={`p-4 border-b border-gray-700 cursor-pointer ${
               path === "/bookings" ? "bg-gray-700" : ""

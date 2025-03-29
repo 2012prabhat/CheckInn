@@ -41,7 +41,7 @@ const MyBookings = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row lg:flex-row justify-between items-center mb-4 md:mb-0">
       {/* <h2 className="text-2xl font-bold text-black text-center mb-6">My Bookings</h2> */}
       <Heading text="My Bookings" className='ml-2 mt-2'/>
       

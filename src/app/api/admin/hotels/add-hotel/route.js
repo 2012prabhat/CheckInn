@@ -29,9 +29,9 @@ export async function POST(req) {
     const formData = await req.formData();
     const fields = Object.fromEntries(formData.entries());
 
-    const { name, description, address, city, state, country, zipcode, amenities, price } = fields;
+    const { name, description, address, city, state, country, zipcode, amenities, price,location } = fields;
 
-    if (!name || !description || !address || !city || !state || !country || !zipcode || !price) {
+    if (!name || !description || !address || !city || !state || !country || !zipcode || !price || !location) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
@@ -75,6 +75,7 @@ export async function POST(req) {
       country,
       zipcode,
       price,
+      location,
       images: files,
       amenities: typeof amenities === "string" ? amenities.split(",") : [],
       owner: user?.userId,
